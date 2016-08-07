@@ -1,10 +1,6 @@
-# Plugin start with gulp
+# Zip Code Service Areas
 
-Wordpress Plugin with Gulp sass, babel, and browsersync
-
-``npm i``
-``gulp watch``
-
-``gulp``
-# zip-code-service-areas
-# zip-code-service-areas
+- Calls from http://zipcodeapi.com/
+- Gathers all Zip Codes from Origin
+- Saves to Custom MySQL Database
+- AJAX add/remove tables
