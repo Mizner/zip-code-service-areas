@@ -21,11 +21,13 @@ function zip_codes() {
 }
 
 class ServiceAreaPage {
+
 	// property declaration
-	public $title = "Services Areas";
+	public $title = "Service Areas";
 
 	// method declaration
 	public function displayVar() {
+
 		echo "<div class='wrap'>" . "<h1>{$this->title}</h1>";
 		//ob_start();
 		$zip_codes = zip_codes();

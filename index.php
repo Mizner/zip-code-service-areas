@@ -20,19 +20,22 @@ function service_areas_create_db() {
 
 add_action( "admin_enqueue_scripts", "service_areas_enqueue_scripts" );
 function service_areas_enqueue_scripts() {
-	// Load Scripts
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_style( "service_areas_css", plugins_url( "./dist/zcsa.min.css", __FILE__ ) );
-	wp_enqueue_script( "service_areas_js", plugins_url( "./dist/zcsa.min.js", __FILE__ ) );
-	wp_localize_script( "service_areas_js", "SERVICE_AREA", [
-		"security" => wp_create_nonce( "service_area_ajax_nonce" ),
-		"success"  => "success!",
-		"error"    => "error!"
-	] );
+	$screen            = get_current_screen();
+	$screen_identifier = $screen->base;
+	if ( 'toplevel_page_service_area' == $screen_identifier ) {
+		// Load Scripts
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_style( "service_areas_css", plugins_url( "./dist/zcsa.min.css", __FILE__ ) );
+		wp_enqueue_script( "service_areas_js", plugins_url( "./dist/zcsa.min.js", __FILE__ ) );
+		wp_localize_script( "service_areas_js", "SERVICE_AREA", [
+			"security" => wp_create_nonce( "service_area_ajax_nonce" ),
+			"success"  => "success!",
+			"error"    => "error!"
+		] );
+	}
 }
 
 // Ajax
-
 require_once( "inc/ajax_post.php" );
 
 // Admin Menu & Page

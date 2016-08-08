@@ -12,9 +12,11 @@ function save_zips() {
 	$post_zip_matches = $_POST["zip_matches"];
 	$post_zip_radious = $_POST["zip_radius"];
 
+
 	global $wpdb;
+	$table_name = $wpdb->prefix . 'zip_codes';
 	$wpdb->insert(
-		"wp_zip_codes",
+		$table_name,
 		[
 			"zip_code"    => $post_zip_code,
 			"zip_matches" => $post_zip_matches,
@@ -22,7 +24,7 @@ function save_zips() {
 		],
 		[ "%s" ] );
 
-	$zip_codes = zip_codes();
+	$zip_codes  = zip_codes();
 	$the_fields = "";
 	foreach ( $zip_codes as $item => $value ) {
 		$the_fields .= $value->zip_matches . ",";
@@ -36,8 +38,6 @@ function save_zips() {
 	fclose( $csv_handler );
 
 	exit(); //prevent 0 in the return
-
-
 
 
 }
@@ -55,17 +55,18 @@ function remove_zips() {
 		return wp_send_json_error( "Sorry, you are not allowed to do this." );
 	}
 
-	$post_zip_code    = $_POST["zip_code"];
+	$post_zip_code = $_POST["zip_code"];
 
 	global $wpdb;
+	$table_name = $wpdb->prefix . 'zip_codes';
 	$wpdb->delete(
-		"wp_zip_codes",
+		$table_name,
 		[
-			"zip_code"    => $post_zip_code,
+			"zip_code" => $post_zip_code,
 		],
 		[ "%s" ] );
 
-	$zip_codes = zip_codes();
+	$zip_codes  = zip_codes();
 	$the_fields = "";
 	foreach ( $zip_codes as $item => $value ) {
 		$the_fields .= $value->zip_matches . ",";
@@ -79,8 +80,6 @@ function remove_zips() {
 	fclose( $csv_handler );
 
 	exit(); //prevent 0 in the return
-
-
 
 
 }
