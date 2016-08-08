@@ -7,6 +7,11 @@ var theFiles = orderJsFiles([
     "main.js",
 ]);
 
+var theFrontFiles = orderJsFiles([
+    // 1st file loads first, 2nd, ect.
+    "front.js",
+]);
+
 // Provide the ability to simplify ordering scripts for concatenation.  See: var theFiles above
 function orderJsFiles(arr) {
     return arr.map(function (str) {
@@ -38,6 +43,18 @@ gulp.task("sass", function () {
         .pipe(browserSync.stream())
 });
 
+gulp.task("sass-front", function () {
+    gulp.src("./assets/styles/front.scss")
+        .pipe(sass()/*.on("error", sass.logError)*/)
+        .pipe(plumber())
+        .pipe(autoprefixer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sourcemaps.write(""))
+        .pipe(rename(theProject + "front.min.css"))
+        .pipe(gulp.dest("./dist"))
+        .pipe(browserSync.stream())
+});
+
 gulp.task("sass-production", function () {
     gulp.src("./assets/styles/main.scss")
         .pipe(sass().on("error", sass.logError))
@@ -45,6 +62,18 @@ gulp.task("sass-production", function () {
         .pipe(cssnano())
         .pipe(rename(theProject + ".min.css"))
         .pipe(gulp.dest("./dist"))
+});
+
+gulp.task("sass-front-production", function () {
+    gulp.src("./assets/styles/front.scss")
+        .pipe(sass()/*.on("error", sass.logError)*/)
+        .pipe(plumber())
+        .pipe(autoprefixer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sourcemaps.write(""))
+        .pipe(rename(theProject + "front.min.css"))
+        .pipe(gulp.dest("./dist"))
+        .pipe(browserSync.stream())
 });
 
 
@@ -60,6 +89,18 @@ gulp.task("js", function () {
         .pipe(gulp.dest("./dist"))
 });
 
+gulp.task("js-front", function () {
+    gulp.src(theFrontFiles)
+        .pipe(plumber())
+        .pipe(concat("output.min.js")) // concat pulls all our files together before minifying them
+        .pipe(babel({
+            presets: ["es2015"]
+        }))
+        .pipe(uglify())
+        .pipe(rename(theProject + "front.min.js"))
+        .pipe(gulp.dest("./dist"))
+});
+
 gulp.task("browser-sync", function () {
     browserSync.init(["*"], {
         proxy: theSite,
@@ -72,7 +113,9 @@ gulp.task("browser-sync", function () {
 
 gulp.task("watch", ["browser-sync"], function () {
     gulp.watch("./assets/styles/**/*.scss", ["sass"]);
+    gulp.watch("./assets/styles/**/*.scss", ["sass-front"]);
     gulp.watch("./assets/scripts/**/*.js", ["js"]);
+    gulp.watch("./assets/scripts/**/*.js", ["js-front"]);
     gulp.watch("./assets/scripts/**/*.js", browserSync.reload);
     gulp.watch("**/*.php", browserSync.reload);
     gulp.watch("gulpfile.js").on("change", function () {
@@ -80,6 +123,6 @@ gulp.task("watch", ["browser-sync"], function () {
     })
 });
 
-gulp.task("default", ["sass", "js"]);
+gulp.task("default", ["sass", "sass-front", "js", "js-front"]);
 
-gulp.task("production", ["sass-production", "js"]);
+gulp.task("production", ["sass-production", "sass-front-production", "js", "js-front"]);

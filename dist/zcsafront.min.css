@@ -1,0 +1,6 @@
+#theForm {
+  display: none; }
+  #theForm.true {
+    display: block; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJmcm9udC5jc3MiXSwic291cmNlc0NvbnRlbnQiOlsiI3RoZUZvcm0ge1xuICBkaXNwbGF5OiBub25lOyB9XG4gICN0aGVGb3JtLnRydWUge1xuICAgIGRpc3BsYXk6IGJsb2NrOyB9XG4iXSwiZmlsZSI6ImZyb250LmNzcyIsInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9 */
